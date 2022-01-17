@@ -1,7 +1,7 @@
 <template>
-  <Navbar />
-   <div id="app-content">
-    <router-view />
+  <div class="container" style="padding: 50px 0 100px 0">
+    <Profile v-if="store.user" />
+    <Auth v-else />
   </div>
 </template>
 
@@ -9,12 +9,10 @@
 import { store } from "./store"
 import { supabase } from "./supabase"
 import { useRouter, useRoute } from 'vue-router'
-import Navbar from "./components/Navbar.vue"
 import Auth from "./components/Auth.vue"
 import Profile from "./components/Profile.vue"
 export default {
   components: {
-    Navbar,
     Auth,
     Profile,
   },
@@ -28,8 +26,8 @@ export default {
     })
 
     if(store.user){
-      // router.push('/leaderboard')
-    }else 
+      router.push('/leaderboard')
+    }
 
     return {
       store,

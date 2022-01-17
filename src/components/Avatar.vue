@@ -13,7 +13,7 @@
       :style="{ height: size, width: size }"
     />
 
-    <div :style="{ width: size }">
+    <div v-if="allowUpload" :style="{ width: size }">
       <label class="button primary block" for="single">
         {{ uploading ? "Uploading ..." : "Upload" }}
       </label>
@@ -36,11 +36,18 @@ import { supabase } from "../supabase"
 export default {
   props: {
     path: String,
+    allowUpload: {
+      type: Boolean,
+      default: false
+    },
+    size: {
+      type: String, 
+      default: "10rem"
+    }
   },
   emits: ["upload", "update:path"],
   setup(prop, { emit }) {
     const { path } = toRefs(prop)
-    const size = ref("10em")
     const uploading = ref(false)
     const src = ref("")
     const files = ref()
@@ -90,7 +97,6 @@ export default {
 
     return {
       path,
-      size,
       uploading,
       src,
       files,

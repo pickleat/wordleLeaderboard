@@ -1,13 +1,17 @@
 <template>
   <form class="form-widget" @submit.prevent="updateProfile">
-    <Avatar v-model:path="avatar_url" @upload="updateProfile" />
+    <Avatar :allowUpload="true" v-model:path="avatar_url" @upload="updateProfile" />
     <div>
       <label for="email">Email</label>
       <input id="email" type="text" :value="store.user.email" disabled />
     </div>
     <div>
-      <label for="username">Name</label>
+      <label for="username">Username</label>
       <input id="username" type="text" v-model="username" />
+    </div>
+    <div>
+      <label for="twitter">Twitter</label>
+      <input id="twitter" type="twitter" v-model="twitter" />
     </div>
     <div>
       <label for="website">Website</label>
@@ -46,6 +50,7 @@ export default {
     const username = ref("")
     const website = ref("")
     const avatar_url = ref("")
+    const twitter = ref("")
 
     async function getProfile() {
       try {
@@ -54,7 +59,7 @@ export default {
 
         let { data, error, status } = await supabase
           .from("profiles")
-          .select(`username, website, avatar_url`)
+          .select(`username, website, avatar_url, twitter`)
           .eq("id", store.user.id)
           .single()
 
@@ -82,6 +87,7 @@ export default {
           username: username.value,
           website: website.value,
           avatar_url: avatar_url.value,
+          twitter: twitter.value,
           updated_at: new Date(),
         }
 
@@ -119,6 +125,7 @@ export default {
       username,
       website,
       avatar_url,
+      twitter,
 
       updateProfile,
       signOut,

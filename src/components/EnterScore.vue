@@ -13,7 +13,6 @@
           {{row}}
         </div>
       </div>
-      <div v-if="puzzleData">PD: {{puzzleData}}</div>
     </div>
     <div class="submit">
         <!-- :value="loading ? 'Loading ...' : 'Submit'"

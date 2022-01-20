@@ -67,6 +67,7 @@ export default {
     async postPuzzle() {
 
       // TODO add back loading state
+      // TODO check if they have already posted a puzzle for this day and render a come back tomorrow otherwise?
       const updates = {
         user: store.user.id,
         puzzle_data: this.puzzleData,

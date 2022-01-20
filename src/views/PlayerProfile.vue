@@ -15,6 +15,7 @@
 import { store } from "../store"
 import { supabase } from "../supabase"
 import { computed, onMounted, ref } from "vue"
+import { useRoute } from 'vue-router'
 import Avatar from "../components/Avatar.vue"
 
 export default {
@@ -23,11 +24,14 @@ export default {
   },
 
    setup() {
+    const route = useRoute()
+    const id = route.params.id
     const loading = ref(true)
     const username = ref("")
     const website = ref("")
     const avatar_url = ref("")
     const twitter = ref("")
+    const puzzles = ref([])
 
     async function getProfile() {
       try {
@@ -37,7 +41,7 @@ export default {
         let { data, error, status } = await supabase
           .from("profiles")
           .select(`username, website, avatar_url, twitter`)
-          .eq("id", store.user.id)
+          .eq("username", id)
           .single()
 
         if (error && status !== 406) throw error
@@ -52,6 +56,18 @@ export default {
         alert(error.message)
       } finally {
         loading.value = false
+      }
+    }
+
+    async function getPuzzles(){
+      try {
+        let { data, error, status } = await supabase
+          .from("puzzles")
+          .select(``)
+      } catch (error) {
+        // catch errs
+      } finally {
+        // finally do something
       }
     }
 

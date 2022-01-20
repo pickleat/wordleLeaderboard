@@ -1,7 +1,7 @@
 <template>
   <nav class="nav">
     <router-link to="/">🏠</router-link>
-    <router-link v-if="store.user" to="/leaderboard">
+    <router-link v-if="store.user" to="/edit-profile">
       <Avatar v-model:path="avatar_url" size="2rem"/>
     </router-link>
     <router-link v-else to="/">login/signup</router-link>
@@ -24,11 +24,12 @@ export default {
     const username = ref("")
     const website = ref("")
     const avatar_url = ref("")
+    store.user = supabase.auth.user()
 
     async function loadAvatarUrl(){
       try {
         loading.value = true
-        store.user = supabase.auth.user()
+        // store.user = supabase.auth.user()
          let { data, error, status } = await supabase
           .from("profiles")
           .select(`username, website, avatar_url`)
@@ -43,13 +44,20 @@ export default {
           avatar_url.value = data.avatar_url
         }
       } catch (error) {
-        alert(error.message)
+        
+        console.error(error.message)
       } finally {
         loading.value = false
       }
     }
 
-    onMounted(() => {loadAvatarUrl()})
+    onMounted(
+      () => {
+        if(store.user){
+          loadAvatarUrl()
+        }
+      }
+    )
 
     return {
       store,

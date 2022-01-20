@@ -5,6 +5,7 @@ import App from "./App.vue"
 // Views
 import Home from './views/Home.vue'
 import Leaderboard from './views/Leaderboard.vue'
+import EditProfile from './views/EditProfile.vue'
 import PlayerProfile from './views/PlayerProfile.vue'
 import NotFound from './views/404.vue'
 
@@ -16,18 +17,18 @@ const routes = [
     name: 'Home',
     component: Home
   },
-  // {
-  //   path: '/profile',
-  //   name: 'Profile',
-  //   component: Profile
-  // },
+  {
+    path: '/edit-profile',
+    name: 'EditProfile',
+    component: EditProfile
+  },
   {
     path: '/leaderboard',
     name: 'Leaderboard',
     component: Leaderboard
   },
   { 
-    path: '/players/:id',
+    path: '/:id',
     name: 'PlayerProfile',
     component: PlayerProfile 
   },

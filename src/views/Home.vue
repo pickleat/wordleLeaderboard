@@ -1,6 +1,6 @@
 <template>
   <div class="container" style="padding: 2rem 0 2rem 0">
-    <h1>Home</h1>
+    <h1 class="header">{{ store.user ? "Home" : "The Leaderboard for Wordle Nerds!"}}</h1>
     <EnterScore v-if="store.user" />
     <Auth v-else />
   </div>
@@ -30,3 +30,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+  .header {
+    text-align: center;
+  }
+</style>

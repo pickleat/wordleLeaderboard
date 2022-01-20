@@ -27,10 +27,6 @@ export default {
       store.user = session.user
     })
 
-    if(store.user){
-      // router.push('/leaderboard')
-    }else 
-
     return {
       store,
     }

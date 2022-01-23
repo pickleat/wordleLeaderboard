@@ -2,7 +2,7 @@
   <div v-if="canPost">
     <h1 class="header">{{ store.user ? "Add your puzzle solution." : "The Leaderboard for Wordle Nerds!"}}</h1>
     <p class="instructions" v-if="store.user">
-      Click share (and copy on mobile) then paste below.
+      Click share (and "copy" on mobile) then paste below.
     </p>
     <form class="form-widget" @submit.prevent="updateProfile">
       <div class="col">
@@ -73,7 +73,7 @@ export default {
 
         if (error) throw error
       } catch (error) {
-        // alert(error.message)
+        alert(error.message)
       } finally {
       }
     }
@@ -85,14 +85,13 @@ export default {
           .eq('user', store.user.id)
           .order('created_at', { ascending: false })
           .limit(1)
-          console.log(data[0])
+
           const newDate = new Date(Date.now())
           const monthPlusOne = (newDate.getMonth() + 1).toString()
           const monthPadStart = monthPlusOne < 10 ? monthPlusOne.padStart(2, '0') : monthPlusOne
           const date = `${newDate.getFullYear()}-${monthPadStart}-${newDate.getDate()}`
         console.log('today ', date)
         if(data[0]?.created_at.slice(0, 10) === date){
-          console.log('we have a match')
           canPost.value = false
           postedPuzzleData.value = data[0]
         }
@@ -104,8 +103,6 @@ export default {
     }
 
     onMounted(() => {
-      console.log(store.user.id)
-      // getUserId()
       getPuzzleForToday()
     })
 
@@ -121,7 +118,6 @@ export default {
     async postPuzzle() {
 
       // TODO add back loading state
-      // TODO check if they have already posted a puzzle for this day and render a come back tomorrow otherwise?
       const updates = {
         user: store.user.id,
         puzzle_data: this.puzzleData,
@@ -129,8 +125,6 @@ export default {
         puzzle_number: this.puzzleNumber,
         created_at: new Date(),
       }
-
-      // TODO Check if user has already submitted this puzzleNumber.
 
       let { error, data } = await supabase.from("puzzles").insert([updates])
     }
@@ -152,18 +146,6 @@ export default {
     puzzleData() {
       return this.puzzleInput.slice(16) 
     },
-    // postedPuzzleNumber(){
-    //   return this.postedPuzzleInput
-    // },
-    // postedPuzzleScore(){
-    //   return this.postedPuzzleInput
-    // },
-    // postedPuzzleRows() {
-    //   return this.postedPuzzleInput
-    // },
-    // postedPuzzleData() {
-    //   return this.postedPuzzleInput
-    // },
   }
 }
 </script>

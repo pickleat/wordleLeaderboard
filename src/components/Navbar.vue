@@ -14,6 +14,8 @@ import { store } from "../store"
 import Avatar from "./Avatar.vue"
 import { onMounted, ref } from 'vue'
 
+// Todo Add dropdown that allows a user to see profile, edit profile, etc...
+
 export default {
   name: "Navbar",
   components: {

@@ -20,12 +20,12 @@
         </div>
       </div>
       <div class="submit">
-          <!-- :value="loading ? 'Loading ...' : 'Submit'"
-          :disabled="loading" -->
         <input
           type="submit"
           class="button block primary"
           @click="postPuzzle"
+          :value="loading ? 'Loading ...' : 'Submit'"
+          :disabled="loading"
         />
       </div>
     </form>
@@ -61,6 +61,7 @@ export default {
   data() {
     return {
       puzzleInput: "",
+      loading: false
     }
   },
   setup() {
@@ -116,8 +117,7 @@ export default {
   },
   methods: {
     async postPuzzle() {
-
-      // TODO add back loading state
+      this.loading = true
       const updates = {
         user: store.user.id,
         puzzle_data: this.puzzleData,
@@ -127,6 +127,12 @@ export default {
       }
 
       let { error, data } = await supabase.from("puzzles").insert([updates])
+      if(error){
+        console.error(error)
+      }else {
+        this.canPost = false
+        this.loading = false
+      }
     }
   },
   computed: {

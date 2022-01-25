@@ -1,6 +1,7 @@
 <template>
   <div class="container" style="padding: 2rem 0 2rem 0">
     <EnterScore v-if="store.user" />
+    <PastPuzzles v-if="store.user" />
     <Auth v-else />
   </div>
 </template>
@@ -10,11 +11,13 @@ import { store } from "../store"
 import { supabase } from "../supabase"
 import Auth from "../components/Auth.vue"
 import EnterScore from "../components/EnterScore.vue"
+import PastPuzzles from "../components/PastPuzzles.vue"
 export default {
   name: "Home",
   components: {
-    Auth,
     EnterScore,
+    PastPuzzles,
+    Auth,
   },
 
   setup() {

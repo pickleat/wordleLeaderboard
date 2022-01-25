@@ -35,9 +35,9 @@
     <p class="instructions">You've posted your puzzle for the day, check out the <router-link to='leaderboard'>Leaderboard</router-link>
     or come back tomorrow to post your next puzzle.</p>
     <div class="col">
-        <h2 class="puzzlePostedH2">Puzzle {{puzzleNumber}} </h2>
-        <h3 v-if="puzzleScore" class="puzzle-data-preview">Score: {{puzzleScore}}</h3>
+        <h2 class="puzzlePostedH2">Today's Puzzle #{{puzzleNumber}} </h2>
         <div v-if="postedPuzzleRows">
+        <h3 v-if="puzzleScore" class="puzzle-data-preview">Score: {{puzzleScore}}</h3>
           <div v-for="row, index in postedPuzzleRows" class="puzzle-data-preview" :key="index">
             {{row}}
           </div>

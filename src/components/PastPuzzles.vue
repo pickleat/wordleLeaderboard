@@ -56,8 +56,6 @@ export default {
           .eq('user', store.user.id)
           .order('created_at', { ascending: false })
 
-          
-          console.log(data)
           pastPuzzles.value = data
         if (error) throw error
       } catch (error) {

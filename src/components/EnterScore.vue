@@ -34,7 +34,8 @@
     <h1 class="header">Puzzle Posted!</h1>
     <p class="instructions">You've posted your puzzle for the day, check out the <router-link to='leaderboard'>Leaderboard</router-link>
     or come back tomorrow to post your next puzzle.</p>
-    <div class="col">
+    <div class='row'>
+      <div class="col">
         <h2 class="puzzlePostedH2">Today's Puzzle #{{puzzleNumber}} </h2>
         <div v-if="postedPuzzleRows">
         <h3 v-if="puzzleScore" class="puzzle-data-preview">Score: {{puzzleScore}}</h3>
@@ -43,6 +44,7 @@
           </div>
         </div>
       </div>
+    </div>
   </div>
   
 </template>
@@ -90,10 +92,12 @@ export default {
           const newDate = new Date(Date.now())
           const monthPlusOne = (newDate.getMonth() + 1).toString()
           const monthPadStart = monthPlusOne < 10 ? monthPlusOne.padStart(2, '0') : monthPlusOne
-          const date = `${newDate.getFullYear()}-${monthPadStart}-${newDate.getDate()}`
-        console.log('today ', date)
+          const day = newDate.getDate().toString()
+          const dayPadStart = day < 10 ? day.padStart(2, '0') : day
+          const date = `${newDate.getFullYear()}-${monthPadStart}-${dayPadStart}`
         if(data[0]?.created_at.slice(0, 10) === date){
-          canPost.value = false
+          // TODO swith back to false before push
+          canPost.value = true
           postedPuzzleData.value = data[0]
         }
         if (error) throw error
@@ -126,12 +130,74 @@ export default {
         created_at: new Date(),
       }
 
-      let { error, data } = await supabase.from("puzzles").insert([updates])
-      if(error){
-        console.error(error)
-      }else {
+      try {
+        let { error, data } = await supabase.from("puzzles").insert([updates])
+
         this.canPost = false
+        if (error) throw error
+      } catch {
+        console.error(error)
+        this.canPost = true
+        
+      }finally {
         this.loading = false
+        // todo uncomment to test
+        // this.updateStreaks()
+      }
+    },
+    async updateStreaks() {
+      try {
+        let { data, error } = await supabase.from('streaks')
+          .select('last_puzzle, id, current_streak')
+          .eq('user', store.user.id)
+          .limit(1)
+
+          const { last_puzzle, id, current_streak } = data[0]
+          const rowId = id
+
+          if(this.puzzleNumber - 1 === parseInt(last_puzzle)){
+            const updates = {
+              last_puzzle: this.puzzleNumber,
+              current_streak: (current_streak + 1),
+            }
+
+            try {
+              let { data, error } = await supabase.from('streaks')
+                .update(updates)
+                .match({id: rowId})
+              
+              if (error) throw error
+            } catch (error) {
+              console.error(error)
+            }
+          }else if (this.puzzleNumber - 1 !== parseInt(last_puzzle)) {
+            const updates = {
+              last_puzzle: this.puzzleNumber,
+              current_streak: 1,
+            }
+
+            try {
+              let { data, error } = await supabase.from('streaks')
+                .update(updates)
+                .match({id: rowId})
+              if (error) throw error
+            } catch (error) {
+              console.error(error)
+            }
+          } else {
+            // Todo create an initial streak if the user doesn't have one.
+            // const updates = {
+            //   last_puzzle: this.puzzleNumber,
+            //   current_streak: 1,
+            //   user: store.user.id
+            // }
+            // let { data, error } = await supabase.from('streaks')
+            //   .insert([updates])
+          }
+        if (error) throw error
+      } catch (error) {
+        console.error(error.message)
+      } finally {
       }
     }
   },
@@ -168,12 +234,21 @@ export default {
     color: var(--custom-color);
   }
 
+  .row {
+    display: flex;
+    flex-direction: column;
+    @media (min-width: 650px) {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+  }
   .col {
     display: flex;
     flex-direction: column;
     width: 100%;
     @media (min-width: 650px) {
-      width: 48%;
+      width: auto;
     }
   }
   .puzzle-data-preview {

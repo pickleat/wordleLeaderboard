@@ -96,8 +96,7 @@ export default {
           const dayPadStart = day < 10 ? day.padStart(2, '0') : day
           const date = `${newDate.getFullYear()}-${monthPadStart}-${dayPadStart}`
         if(data[0]?.created_at.slice(0, 10) === date){
-          // TODO swith back to false before push
-          canPost.value = true
+          canPost.value = false
           postedPuzzleData.value = data[0]
         }
         if (error) throw error

@@ -4,6 +4,7 @@ import App from "./App.vue"
 
 // Views
 import Home from './views/Home.vue'
+import Signin from './views/Signin.vue'
 import Leaderboard from './views/Leaderboard.vue'
 import EditProfile from './views/EditProfile.vue'
 import PlayerProfile from './views/PlayerProfile.vue'
@@ -16,6 +17,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/signin',
+    name: 'Signin',
+    component: Signin
   },
   {
     path: '/edit-profile',

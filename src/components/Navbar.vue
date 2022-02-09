@@ -4,7 +4,7 @@
     <router-link v-if="store.user" to="/edit-profile">
       <Avatar v-model:path="avatar_url" size="2rem"/>
     </router-link>
-    <router-link v-else to="/">login/signup</router-link>
+    <router-link v-else to="Signin">login/signup</router-link>
   </nav>
 </template>
 

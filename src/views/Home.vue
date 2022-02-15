@@ -31,21 +31,21 @@ export default {
     })
 
     async function checkForProfile() {
-      try {
-        let { data, error } = await supabase
+      if(store.user.id){
+        try {
+          let { data, error } = await supabase
           .from('profiles')
           .select('*')
           .eq('id', store.user.id)
           .single()
 
         if ( error ) throw error
-      } catch ( error ) {
-        if(error.details === "Results contain 0 rows, application/vnd.pgrst.object+json requires 1 row"){
-          
-          createUsername()
-        }else {
+        } catch ( error ) {
           console.error(error)
         }
+      } 
+      else {
+        createUsername()
       }
     }
 

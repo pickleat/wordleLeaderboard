@@ -54,7 +54,7 @@ export default {
         let { data, error } = await supabase.from("puzzles")
           .select('created_at, puzzle_number, user, puzzle_data, puzzle_score')
           .eq('user', store.user.id)
-          .order('created_at', { ascending: false })
+          .order('puzzle_number', { ascending: false })
 
           pastPuzzles.value = data
         if (error) throw error

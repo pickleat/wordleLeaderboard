@@ -26,12 +26,6 @@
         :disabled="loading"
       />
     </div>
-
-    <div>
-      <button class="button block" @click="signOut" :disabled="loading">
-        Sign Out
-      </button>
-    </div>
   </form>
 </template>
 
@@ -103,18 +97,6 @@ export default {
       }
     }
 
-    async function signOut() {
-      try {
-        loading.value = true
-        let { error } = await supabase.auth.signOut()
-        if (error) throw error
-      } catch (error) {
-        alert(error.message)
-      } finally {
-        loading.value = false
-      }
-    }
-
     onMounted(() => {
       getProfile()
     })
@@ -128,7 +110,6 @@ export default {
       twitter,
 
       updateProfile,
-      signOut,
     }
   },
 }

@@ -1,8 +1,8 @@
 <template>
   <div class="container" style="padding: 2rem 0 2rem 0">
     <EnterScore v-if="store.user" />
+    <Streak  v-if="store.user" />
     <PastPuzzles v-if="store.user" />
-    <!-- <Streak  v-if="store.user" /> -->
     <Auth v-else />
   </div>
 </template>

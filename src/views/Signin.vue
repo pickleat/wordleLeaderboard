@@ -22,7 +22,6 @@ export default {
     })
 
     if(store.user){
-      console.log('user');
       const router = useRouter()
       router.push('/')
     }

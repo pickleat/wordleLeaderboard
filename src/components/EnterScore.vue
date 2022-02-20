@@ -54,11 +54,13 @@ import { supabase } from "../supabase"
 import { store } from "../store"
 import { computed, onMounted, ref, reactive } from "vue"
 import Avatar from "./Avatar.vue"
+import Streak from "./Streak.vue"
 
 export default {
   name: "EnterScore",
   components: {
     Avatar,
+    Streak,
   },
   data() {
     return {
@@ -145,54 +147,28 @@ export default {
       }
     },
     async updateStreaks() {
+      // this function isn't being called yet
       try {
         let { data, error } = await supabase.from('streaks')
-          .select('last_puzzle, id, current_streak')
+          .select('last_puzzle, id, current_streak, all_time_high')
           .eq('user', store.user.id)
           .limit(1)
 
-          const { last_puzzle, id, current_streak } = data[0]
+          let { last_puzzle, id, current_streak, all_time_high } = data[0]
           const rowId = id
 
-          if(this.puzzleNumber - 1 === parseInt(last_puzzle)){
-            const updates = {
-              last_puzzle: this.puzzleNumber,
-              current_streak: (current_streak + 1),
-            }
-
-            try {
-              let { data, error } = await supabase.from('streaks')
-                .update(updates)
-                .match({id: rowId})
-              
-              if (error) throw error
-            } catch (error) {
-              console.error(error)
-            }
-          }else if (this.puzzleNumber - 1 !== parseInt(last_puzzle)) {
-            const updates = {
-              last_puzzle: this.puzzleNumber,
-              current_streak: 1,
-            }
-
-            try {
-              let { data, error } = await supabase.from('streaks')
-                .update(updates)
-                .match({id: rowId})
-              if (error) throw error
-            } catch (error) {
-              console.error(error)
-            }
-          } else {
-            // Todo create an initial streak if the user doesn't have one.
-            // const updates = {
-            //   last_puzzle: this.puzzleNumber,
-            //   current_streak: 1,
-            //   user: store.user.id
-            // }
-            // let { data, error } = await supabase.from('streaks')
-            //   .insert([updates])
+          console.log(data[0])
+          let updates = {
+            last_puzzle: this.puzzleNumber,
           }
+          // Update Current Streak
+          if(this.puzzleNumber - 1 === parseInt(last_puzzle)){
+            updates.current_streak = (current_streak + 1)
+          }
+          if (this.puzzleNumber - 1 !== parseInt(last_puzzle)) {
+            updates.current_streak = 1
+          }
+
         if (error) throw error
       } catch (error) {
         console.error(error.message)

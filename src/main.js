@@ -24,6 +24,11 @@ const routes = [
     component: Signin
   },
   {
+    path: '/signup',
+    name: 'Signup',
+    component: Signin
+  },
+  {
     path: '/edit-profile',
     name: 'EditProfile',
     component: EditProfile
